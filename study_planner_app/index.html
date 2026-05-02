@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyFlow — Plan Your Success</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- ========== SPLASH / HERO ========== -->
+<div id="splash-screen" class="splash">
+  <div class="splash-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+  <div class="splash-content">
+    <div class="splash-badge">✦ Your Personal Study Assistant</div>
+    <h1 class="splash-title">
+      Plan Smart <br/><span class="accent-text">Study Better </span>
+      <br/><span class="accent-text">With Consistency </span>
+    </h1>
+    <p class="splash-sub">
+      Track goals. Build habits. Stay consistent.<br/>
+      Everything you need to succeed in one place.
+    </p>
+    <button class="btn-primary splash-cta" onclick="goToProfile()">
+      <span>Start Planning</span>
+      <i class="fa fa-arrow-right"></i>
+    </button>
+    <div class="splash-stats">
+      <div class="stat"><span class="stat-num">∞</span><span>Study Plans</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">24/7</span><span>Reminders</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">100%</span><span>Free</span></div>
+    </div>
+  </div>
+  <div class="splash-deco">
+    <div class="deco-card deco1">📚 Operating Systems — Chapter 5</div>
+    <div class="deco-card deco2">✅ Computer Architecture Lab Report</div>
+    <div class="deco-card deco3">⏰ Reminder: 9:00 AM</div>
+  </div>
+</div>
+
+<!-- ========== APP SHELL ========== -->
+<div id="app" class="app hidden">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">SF</div>
+      <span class="logo-text">StudyFlow</span>
+    </div>
+    <div class="profile-mini" id="profile-mini">
+      <div class="avatar" id="sidebar-avatar">?</div>
+      <div class="profile-mini-info">
+        <div class="profile-mini-name" id="sidebar-name">Student</div>
+        <div class="profile-mini-class" id="sidebar-class">—</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+        <i class="fa fa-house"></i><span>Dashboard</span>
+      </a>
+      <a class="nav-item" data-page="goals" onclick="navigate('goals')">
+        <i class="fa fa-bullseye"></i><span>Goals</span>
+      </a>
+      <a class="nav-item" data-page="planner" onclick="navigate('planner')">
+        <i class="fa fa-calendar-days"></i><span>Planner</span>
+      </a>
+      <a class="nav-item" data-page="tasks" onclick="navigate('tasks')">
+        <i class="fa fa-list-check"></i><span>Tasks</span>
+      </a>
+      <a class="nav-item" data-page="reminders" onclick="navigate('reminders')">
+        <i class="fa fa-bell"></i><span>Reminders</span>
+      </a>
+      <a class="nav-item" data-page="profile" onclick="navigate('profile')">
+        <i class="fa fa-user"></i><span>Profile</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+  <div class="streak-box">
+    <span class="streak-fire">🔥</span>
+    <div>
+      <div class="streak-num" id="streak-num">0</div>
+      <div class="streak-label">Day Streak</div>
+    </div>
+  </div>
+  <button class="logout-btn" onclick="logout()">
+    <i class="fa fa-right-from-bracket"></i> Log Out
+  </button>
+</div>
+  </aside>
+
+  <!-- Mobile Top Bar -->
+  <div class="mobile-topbar">
+    <button class="hamburger" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+    <span class="mobile-logo">StudyFlow</span>
+    <div class="avatar small" id="mobile-avatar">?</div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section id="page-dashboard" class="page active">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title" id="greeting">Good Morning! 👋</h2>
+          <p class="page-sub">Here's your study overview for today.</p>
+        </div>
+        <div class="date-badge" id="today-date"></div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card accent-green">
+          <i class="fa fa-bullseye"></i>
+          <div class="stat-card-num" id="stat-goals">0</div>
+          <div class="stat-card-label">Active Goals</div>
+        </div>
+        <div class="stat-card accent-blue">
+          <i class="fa fa-list-check"></i>
+          <div class="stat-card-num" id="stat-tasks">0</div>
+          <div class="stat-card-label">Tasks Today</div>
+        </div>
+        <div class="stat-card accent-orange">
+          <i class="fa fa-check-circle"></i>
+          <div class="stat-card-num" id="stat-done">0</div>
+          <div class="stat-card-label">Completed</div>
+        </div>
+        <div class="stat-card accent-purple">
+          <i class="fa fa-clock"></i>
+          <div class="stat-card-num" id="stat-hours">0h</div>
+          <div class="stat-card-label">Study Hours</div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="card">
+          <div class="card-header">
+            <h3>Today's Tasks</h3>
+            <button class="btn-mini" onclick="navigate('tasks')">See All</button>
+          </div>
+          <div id="dash-tasks-list" class="task-mini-list">
+            <div class="empty-state-small">No tasks yet. <a onclick="navigate('tasks')">Add one →</a></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3>Active Goals</h3>
+            <button class="btn-mini" onclick="navigate('goals')">See All</button>
+          </div>
+          <div id="dash-goals-list" class="goal-mini-list">
+            <div class="empty-state-small">No goals yet. <a onclick="navigate('goals')">Add one →</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card motivational-card">
+        <div class="quote-icon">"</div>
+        <p class="quote-text" id="daily-quote">Success is the sum of small efforts repeated day in and day out.</p>
+        <span class="quote-author" id="quote-author">— Robert Collier</span>
+      </div>
+    </section>
+
+    <!-- ===== PROFILE SETUP ===== -->
+    <section id="page-profile" class="page">
+      <div class="page-header">
+        <h2 class="page-title">Your Profile</h2>
+        <p class="page-sub">Tell us about yourself so we can personalize your planner.</p>
+      </div>
+      <div class="card profile-card">
+        <div class="avatar-upload-area">
+          <div class="avatar large" id="profile-avatar-big">?</div>
+          <div class="avatar-name-display" id="avatar-name-display">Your Name</div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="p-name" placeholder="e.g. Rahul Sharma" oninput="updateAvatarPreview()"/>
+          </div>
+          <div class="form-group">
+            <label>Institution Type *</label>
+            <select id="p-type" onchange="toggleEducationFields()">
+              <option value="">— Select —</option>
+              <option value="school">School</option>
+              <option value="college">College / University</option>
+            </select>
+          </div>
+          <div class="form-group" id="f-institution">
+            <label>School / College Name</label>
+            <input type="text" id="p-institution" placeholder="e.g. St. Xavier's College"/>
+          </div>
+          <div class="form-group hidden" id="f-class">
+            <label>Class</label>
+            <select id="p-class">
+              <option value="">— Select Class —</option>
+              <option>Class 6</option><option>Class 7</option><option>Class 8</option>
+              <option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option>
+            </select>
+          </div>
+          <div class="form-group hidden" id="f-semester">
+            <label>Semester</label>
+            <select id="p-semester">
+              <option value="">— Select —</option>
+              <option>Semester 1</option><option>Semester 2</option><option>Semester 3</option>
+              <option>Semester 4</option><option>Semester 5</option><option>Semester 6</option>
+              <option>Semester 7</option><option>Semester 8</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Department / Stream</label>
+            <input type="text" id="p-dept" placeholder="e.g. Computer Science, Science, Commerce"/>
+          </div>
+          <div class="form-group">
+            <label>Study Goal (brief)</label>
+            <input type="text" id="p-goal-text" placeholder="e.g. Score 90%+ in finals"/>
+          </div>
+          <div class="form-group">
+            <label>Daily Study Target (hours)</label>
+            <input type="number" id="p-hours" min="1" max="16" placeholder="e.g. 6"/>
+          </div>
+        </div>
+        <button class="btn-primary full-width" onclick="saveProfile()">
+          <i class="fa fa-save"></i> Save Profile
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== GOALS ===== -->
+    <section id="page-goals" class="page">
+      <div class="page-header">
+        <h2 class="page-title">My Goals</h2>
+        <button class="btn-primary" onclick="openModal('goal-modal')">
+          <i class="fa fa-plus"></i> New Goal
+        </button>
+      </div>
+      <div id="goals-list" class="goals-grid">
+        <div class="empty-state">
+          <div class="empty-icon">🎯</div>
+          <p>No goals yet. Set your first study goal!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PLANNER ===== -->
+    <section id="page-planner" class="page">
+      <div class="page-header">
+        <h2 class="page-title">Study Planner</h2>
+        <div class="planner-tabs">
+          <button class="tab-btn active" onclick="switchPlannerTab('day', this)">Day</button>
+          <button class="tab-btn" onclick="switchPlannerTab('week', this)">Week</button>
+          <button class="tab-btn" onclick="switchPlannerTab('month', this)">Month</button>
+        </div>
+        <button class="btn-primary" onclick="openModal('session-modal')">
+          <i class="fa fa-plus"></i> Add Session
+        </button>
+      </div>
+      <div id="planner-day" class="planner-view active-view">
+        <div class="day-schedule" id="day-schedule">
+          <div class="empty-state"><div class="empty-icon">📅</div><p>No sessions planned. Add a study session!</p></div>
+        </div>
+      </div>
+      <div id="planner-week" class="planner-view">
+        <div class="week-grid" id="week-grid"></div>
+      </div>
+      <div id="planner-month" class="planner-view">
+        <div class="month-calendar" id="month-calendar"></div>
+      </div>
+    </section>
+
+    <!-- ===== TASKS ===== -->
+    <section id="page-tasks" class="page">
+      <div class="page-header">
+        <h2 class="page-title">Tasks</h2>
+        <button class="btn-primary" onclick="openModal('task-modal')">
+          <i class="fa fa-plus"></i> New Task
+        </button>
+      </div>
+      <div class="task-filters">
+        <button class="filter-btn active" onclick="filterTasks('all', this)">All</button>
+        <button class="filter-btn" onclick="filterTasks('pending', this)">Pending</button>
+        <button class="filter-btn" onclick="filterTasks('done', this)">Done</button>
+        <button class="filter-btn" onclick="filterTasks('high', this)">🔴 High</button>
+        <button class="filter-btn" onclick="filterTasks('medium', this)">🟡 Medium</button>
+        <button class="filter-btn" onclick="filterTasks('low', this)">🟢 Low</button>
+      </div>
+      <div id="tasks-list" class="tasks-container">
+        <div class="empty-state"><div class="empty-icon">✅</div><p>No tasks yet. Add your first task!</p></div>
+      </div>
+    </section>
+
+    <!-- ===== REMINDERS ===== -->
+    <section id="page-reminders" class="page">
+      <div class="page-header">
+        <h2 class="page-title">Reminders</h2>
+        <button class="btn-primary" onclick="openModal('reminder-modal')">
+          <i class="fa fa-plus"></i> New Reminder
+        </button>
+      </div>
+      <div id="reminders-list" class="reminders-container">
+        <div class="empty-state"><div class="empty-icon">🔔</div><p>No reminders set. Stay on track by adding reminders!</p></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ MODALS ============ -->
+
+<!-- Goal Modal -->
+<div id="goal-modal" class="modal-overlay hidden" onclick="closeModalOutside(event,'goal-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>New Study Goal</h3>
+      <button onclick="closeModal('goal-modal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Goal Title *</label><input type="text" id="g-title" placeholder="e.g. Complete Organic Chemistry"/></div>
+      <div class="form-group"><label>Subject / Topic</label><input type="text" id="g-subject" placeholder="e.g. Chemistry"/></div>
+      <div class="form-row">
+        <div class="form-group"><label>Target Date</label><input type="date" id="g-date"/></div>
+        <div class="form-group"><label>Daily Hours</label><input type="number" id="g-hours" min="0.5" max="12" step="0.5" placeholder="2"/></div>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select id="g-priority">
+          <option value="high">🔴 High</option>
+          <option value="medium" selected>🟡 Medium</option>
+          <option value="low">🟢 Low</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Notes</label><textarea id="g-notes" placeholder="What do you want to achieve?" rows="3"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('goal-modal')">Cancel</button>
+      <button class="btn-primary" onclick="addGoal()">Add Goal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Task Modal -->
+<div id="task-modal" class="modal-overlay hidden" onclick="closeModalOutside(event,'task-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>New Task</h3>
+      <button onclick="closeModal('task-modal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Task Name *</label><input type="text" id="t-name" placeholder="e.g. Solve 20 integration problems"/></div>
+      <div class="form-row">
+        <div class="form-group"><label>Subject</label><input type="text" id="t-subject" placeholder="Maths"/></div>
+        <div class="form-group"><label>Due Date</label><input type="date" id="t-date"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="t-priority">
+            <option value="high">🔴 High</option>
+            <option value="medium" selected>🟡 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Est. Time (mins)</label>
+          <input type="number" id="t-time" min="5" step="5" placeholder="60"/>
+        </div>
+      </div>
+      <div class="form-group"><label>Notes</label><textarea id="t-notes" placeholder="Any details..." rows="2"></textarea></div>
+      <div class="form-group toggle-row">
+        <label>Set a Reminder for this task?</label>
+        <label class="toggle"><input type="checkbox" id="t-reminder-toggle" onchange="toggleTaskReminder()"/><span class="slider"></span></label>
+      </div>
+      <div id="t-reminder-time-field" class="form-group hidden">
+        <label>Reminder Time</label>
+        <input type="time" id="t-reminder-time"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('task-modal')">Cancel</button>
+      <button class="btn-primary" onclick="addTask()">Add Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- Session Modal -->
+<div id="session-modal" class="modal-overlay hidden" onclick="closeModalOutside(event,'session-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Plan a Study Session</h3>
+      <button onclick="closeModal('session-modal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Session Title *</label><input type="text" id="s-title" placeholder="e.g. Morning Physics Revision"/></div>
+      <div class="form-group"><label>Subject</label><input type="text" id="s-subject" placeholder="Physics"/></div>
+      <div class="form-row">
+        <div class="form-group"><label>Date</label><input type="date" id="s-date"/></div>
+        <div class="form-group"><label>Start Time</label><input type="time" id="s-start"/></div>
+        <div class="form-group"><label>End Time</label><input type="time" id="s-end"/></div>
+      </div>
+      <div class="form-group">
+        <label>Session Type</label>
+        <select id="s-type">
+          <option value="study">📖 Study</option>
+          <option value="revision">🔁 Revision</option>
+          <option value="practice">✏️ Practice</option>
+          <option value="exam">📝 Mock Exam</option>
+          <option value="break">☕ Break</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Notes / Topics to cover</label><textarea id="s-notes" placeholder="List topics..." rows="3"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('session-modal')">Cancel</button>
+      <button class="btn-primary" onclick="addSession()">Schedule It</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reminder Modal -->
+<div id="reminder-modal" class="modal-overlay hidden" onclick="closeModalOutside(event,'reminder-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>New Reminder</h3>
+      <button onclick="closeModal('reminder-modal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Reminder Title *</label><input type="text" id="r-title" placeholder="e.g. Start Maths Study"/></div>
+      <div class="form-row">
+        <div class="form-group"><label>Date</label><input type="date" id="r-date"/></div>
+        <div class="form-group"><label>Time *</label><input type="time" id="r-time"/></div>
+      </div>
+      <div class="form-group">
+        <label>Repeat</label>
+        <select id="r-repeat">
+          <option value="none">No Repeat</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="weekdays">Weekdays Only</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Message / Note</label><textarea id="r-note" rows="2" placeholder="Optional message..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('reminder-modal')">Cancel</button>
+      <button class="btn-primary" onclick="addReminder()">Set Reminder</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
